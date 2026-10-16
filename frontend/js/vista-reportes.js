@@ -1,38 +1,11 @@
 'use strict';
 
-function barra(porcentaje) {
-  const caja = nodo('div', undefined, 'progress');
-  const b = nodo('div', undefined, 'progress-bar');
-  b.style.width = porcentaje + '%';
-  caja.appendChild(b);
-  return caja;
-}
-
-function bloqueConteos(titulo, filas, total) {
-  const bloque = tarjetaConTitulo(titulo);
-  if (filas.length === 0) {
-    bloque.cuerpo.appendChild(nodo('p', 'Sin datos en este periodo.', 'text-muted mb-0'));
-    return bloque.tarjeta;
-  }
-  filas.forEach((f) => {
-    const fila = nodo('div', undefined, 'mb-2');
-    const linea = nodo('div', undefined, 'd-flex justify-content-between small');
-    linea.appendChild(nodo('span', f.etiqueta));
-    linea.appendChild(nodo('span', String(f.total), 'fw-semibold'));
-    fila.appendChild(linea);
-    fila.appendChild(barra(total ? Math.round((f.total * 100) / total) : 0));
-    bloque.cuerpo.appendChild(fila);
-  });
-  return bloque.tarjeta;
-}
-
-function indicador(etiqueta, valor) {
-  const col = nodo('div', undefined, 'col-6 col-lg-3');
-  const tarjeta = nodo('div', undefined, 'card shadow-sm h-100');
-  const cuerpo = nodo('div', undefined, 'card-body');
-  cuerpo.appendChild(nodo('div', String(valor), 'display-6'));
-  cuerpo.appendChild(nodo('div', etiqueta, 'text-muted'));
-  tarjeta.appendChild(cuerpo);
+// Tarjeta de resumen con degradado. Tambien la usa el Inicio del administrador.
+function indicador(etiqueta, valor, tono, columna) {
+  const col = nodo('div', undefined, columna || 'col-6 col-lg-3');
+  const tarjeta = nodo('div', undefined, 'kpi kpi-' + (tono || 'azul'));
+  tarjeta.appendChild(nodo('div', String(valor), 'kpi-num'));
+  tarjeta.appendChild(nodo('div', etiqueta, 'kpi-et'));
   col.appendChild(tarjeta);
   return col;
 }
@@ -53,23 +26,25 @@ async function pintarReporte(zona, filtros) {
     return;
   }
   const d = r.json;
-  const indicadores = nodo('div', undefined, 'row g-3 mb-3');
-  indicadores.appendChild(indicador('Solicitudes', d.total));
-  indicadores.appendChild(indicador('Abiertas', d.abiertas));
-  indicadores.appendChild(indicador('Cerradas', d.total - d.abiertas));
-  zona.appendChild(indicadores);
+
+  const kpis = nodo('div', undefined, 'row g-3 mb-3');
+  kpis.appendChild(indicador('Solicitudes', d.total, 'azul', 'col-12 col-md-4'));
+  kpis.appendChild(indicador('Abiertas', d.abiertas, 'ambar', 'col-6 col-md-4'));
+  kpis.appendChild(indicador('Cerradas', d.total - d.abiertas, 'verde', 'col-6 col-md-4'));
+  zona.appendChild(kpis);
 
   const rejilla = nodo('div', undefined, 'row g-3');
-  [
-    ['Por estado', d.por_estado],
-    ['Por tipo de avalúo', d.por_tipo],
-    ['Por responsable', d.por_responsable],
-    ['Por mes de registro', d.por_mes],
-  ].forEach((par) => {
+  function panel(titulo, contenido) {
     const col = nodo('div', undefined, 'col-lg-6');
-    col.appendChild(bloqueConteos(par[0], par[1], d.total));
+    const bloque = tarjetaConTitulo(titulo);
+    bloque.cuerpo.appendChild(contenido);
+    col.appendChild(bloque.tarjeta);
     rejilla.appendChild(col);
-  });
+  }
+  panel('Por estado', dona(d.por_estado, d.total, 'solicitudes'));
+  panel('Por mes de registro', columnas(d.por_mes));
+  panel('Por tipo de avalúo', barrasH(d.por_tipo, d.total));
+  panel('Por responsable', dona(d.por_responsable, d.total, 'solicitudes'));
   zona.appendChild(rejilla);
 }
 
