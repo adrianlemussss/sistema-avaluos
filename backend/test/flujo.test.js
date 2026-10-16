@@ -248,3 +248,30 @@ test('RF-11 cotizacion: solo el socio duenio registra y consulta', async () => {
     ['COTIZACION_REGISTRADA', 'COTIZACION_ESTATUS', 'COTIZACION_ESTATUS']);
 });
 
+
+test('RF-13 reportes: conteos consistentes y limitados a lo visible', async () => {
+  const ruta = '/api/reportes/resumen';
+  assert.equal((await u.cliente1.llamar('GET', ruta)).status, 403);
+  assert.equal((await u.admin.llamar('GET', ruta)).status, 403);
+  assert.equal((await u.socioA.llamar('GET', ruta + '?desde=ayer')).status, 400);
+  assert.equal((await u.socioA.llamar('GET', ruta + '?socio=abc')).status, 400);
+
+  const suma = (filas) => filas.reduce((acc, f) => acc + f.total, 0);
+  const a = await u.socioA.llamar('GET', ruta);
+  assert.equal(a.status, 200);
+  assert.ok(a.json.total >= 1);
+  assert.equal(suma(a.json.por_estado), a.json.total);
+  assert.equal(suma(a.json.por_tipo), a.json.total);
+  assert.equal(suma(a.json.por_responsable), a.json.total);
+  assert.equal(suma(a.json.por_mes), a.json.total);
+
+  // El socio B no es duenio de nada y su acceso compartido ya fue revocado.
+  const b = await u.socioB.llamar('GET', ruta);
+  assert.equal(b.json.total, 0);
+  assert.deepEqual(b.json.por_estado, []);
+
+  const asis = await u.asistente.llamar('GET', ruta);
+  assert.ok(asis.json.total >= a.json.total);
+  const futuro = await u.asistente.llamar('GET', ruta + '?desde=2999-01-01');
+  assert.equal(futuro.json.total, 0);
+});
