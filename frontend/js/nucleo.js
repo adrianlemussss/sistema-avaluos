@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 const ROLES = {
   cliente: 'Cliente',
@@ -44,6 +44,7 @@ function insignia(estado) {
 function alerta(tipo, texto) {
   const a = nodo('div', texto, 'alert alert-' + tipo);
   a.setAttribute('role', 'alert');
+  if (tipo === 'success') setTimeout(() => a.remove(), 4000);
   return a;
 }
 
@@ -61,7 +62,9 @@ function construirMenu() {
   Object.values(App.vistas)
     .filter((v) => v.menu && v.roles.includes(App.yo.rol))
     .forEach((v) => {
-      const a = nodo('a', v.titulo, 'nav-link text-white');
+      const a = nodo('a', undefined, 'nav-link');
+      a.appendChild(icono(ICONO_VISTA[v.nombre] || 'documento'));
+      a.appendChild(nodo('span', v.titulo));
       a.href = '#/' + v.nombre;
       a.dataset.vista = v.nombre;
       menu.appendChild(a);
@@ -120,3 +123,4 @@ async function arrancar() {
 if (document.body.dataset.pagina === 'panel') {
   document.addEventListener('DOMContentLoaded', arrancar);
 }
+

@@ -6,36 +6,37 @@
   <title>Panel</title>
   <link rel="stylesheet" href="/vendor/bootstrap.min.css">
   <link rel="stylesheet" href="/css/estilos.css">
+  <script src="/js/iconos.js" defer></script>
   <script src="/js/nucleo.js" defer></script>
   <script src="/js/vistas-base.js" defer></script>
-   <script src="/js/vista-nueva.js" defer></script>
+  <script src="/js/vista-nueva.js" defer></script>
   <script src="/js/vista-detalle.js" defer></script>
-<script src="/js/vista-cotizacion.js" defer></script>
-<script src="/js/vista-inicio.js" defer></script>
-  <script src="/js/vista-reportes.js" defer></script>
-    <script src="/js/vista-usuarios.js" defer></script>
-  <script src="/js/vista-auditoria.js" defer></script>
+  <script src="/js/vista-cotizacion.js" defer></script>
   <script src="/js/vista-referencia.js" defer></script>
-
-
-
+  <script src="/js/vista-inicio.js" defer></script>
+  <script src="/js/vista-reportes.js" defer></script>
+  <script src="/js/vista-usuarios.js" defer></script>
+  <script src="/js/vista-auditoria.js" defer></script>
 </head>
-<body class="bg-light" data-pagina="panel">
+<body data-pagina="panel">
   <div class="d-flex">
-    <aside id="lateral" class="lateral bg-dark text-white">
-      <div class="p-3 border-bottom border-secondary">
-        <strong>Avalúos</strong>
-        <div id="rol-etiqueta" class="small text-secondary"></div>
+    <aside id="lateral" class="lateral">
+      <div class="marca-cab">
+        <span class="logo-cuadro">A</span>
+        <span>
+          <span class="d-block fw-semibold lh-1">Avalúos</span>
+          <span id="rol-etiqueta" class="d-block small text-muted"></span>
+        </span>
       </div>
-      <nav id="menu" class="nav flex-column p-2"></nav>
-      <div class="mt-auto p-3 border-top border-secondary">
-        <div id="usuario" class="small mb-2"></div>
-        <button id="salir" class="btn btn-outline-light btn-sm w-100" type="button">Cerrar sesión</button>
+      <nav id="menu" class="nav flex-column p-2 gap-1"></nav>
+      <div class="pie mt-auto">
+        <div id="usuario" class="small fw-semibold mb-2 text-truncate"></div>
+        <button id="salir" class="btn btn-outline-secondary btn-sm w-100" type="button">Cerrar sesión</button>
       </div>
     </aside>
     <div class="flex-grow-1 principal">
-      <header class="d-md-none bg-dark p-2">
-        <button id="abrir-menu" class="btn btn-outline-light btn-sm" type="button">Menú</button>
+      <header class="barra-movil d-md-none">
+        <button id="abrir-menu" class="btn btn-outline-secondary btn-sm" type="button">Menú</button>
       </header>
       <main id="contenido" class="container-fluid p-3 p-md-4"></main>
     </div>

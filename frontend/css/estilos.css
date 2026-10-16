@@ -1,62 +1,146 @@
+:root {
+  --marino: #1f3a5f;
+  --marino-oscuro: #172c49;
+  --marino-claro: #eef2f7;
+  --borde: #e2e6eb;
+  --texto: #1f2933;
+  --apagado: #6b7785;
+  --fondo: #f6f7f9;
+
+  --bs-body-font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --bs-body-font-size: .94rem;
+  --bs-body-color: var(--texto);
+  --bs-body-bg: var(--fondo);
+  --bs-secondary-color: var(--apagado);
+  --bs-border-color: var(--borde);
+  --bs-link-color: var(--marino);
+  --bs-link-hover-color: var(--marino-oscuro);
+  --bs-primary: var(--marino);
+  --bs-primary-rgb: 31, 58, 95;
+}
 
 body { min-height: 100vh; }
+h1.h3 { font-weight: 600; letter-spacing: -.01em; color: var(--marino); }
 
-.lateral { width: 250px; min-height: 100vh; display: flex; flex-direction: column; flex-shrink: 0; }
-.lateral .nav-link { border-radius: .4rem; }
-.lateral .nav-link:hover { background: rgba(255, 255, 255, .1); }
-.lateral .nav-link.active { background: #0d6efd; }
+/* Botones */
+.btn { border-radius: .4rem; font-weight: 500; }
+.btn-primary {
+  --bs-btn-bg: var(--marino); --bs-btn-border-color: var(--marino);
+  --bs-btn-hover-bg: var(--marino-oscuro); --bs-btn-hover-border-color: var(--marino-oscuro);
+  --bs-btn-active-bg: var(--marino-oscuro); --bs-btn-active-border-color: var(--marino-oscuro);
+  --bs-btn-disabled-bg: var(--marino); --bs-btn-disabled-border-color: var(--marino);
+  --bs-btn-focus-shadow-rgb: 31, 58, 95;
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--marino); --bs-btn-border-color: var(--marino);
+  --bs-btn-hover-bg: var(--marino); --bs-btn-hover-border-color: var(--marino);
+  --bs-btn-active-bg: var(--marino); --bs-btn-active-border-color: var(--marino);
+  --bs-btn-disabled-color: var(--marino); --bs-btn-disabled-border-color: var(--marino);
+  --bs-btn-focus-shadow-rgb: 31, 58, 95;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--marino);
+  box-shadow: 0 0 0 .2rem rgba(31, 58, 95, .15);
+}
+
+/* Tarjetas planas con borde fino */
+.card { border: 1px solid var(--borde); border-radius: .5rem; box-shadow: none; background: #fff; }
+.shadow-sm { box-shadow: none !important; }
+.card-body h2.h6 { font-size: .72rem; font-weight: 600; letter-spacing: .07em; }
+
+/* Tablas */
+.table-light { --bs-table-bg: #fafbfc; --bs-table-color: var(--apagado); --bs-table-border-color: var(--borde); }
+.table thead th {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 600;
+  border-bottom: 1px solid var(--borde);
+}
+.table-hover { --bs-table-hover-bg: #f1f4f8; }
+.fila-click { cursor: pointer; }
+
+/* Menu lateral claro */
+.lateral {
+  width: 240px; flex-shrink: 0; display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  background: #fff; border-right: 1px solid var(--borde);
+}
+.marca-cab { padding: 1.1rem; border-bottom: 1px solid var(--borde); display: flex; align-items: center; gap: .7rem; }
+.logo-cuadro {
+  width: 34px; height: 34px; border-radius: 8px; background: var(--marino); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-weight: 700;
+}
+.lateral .nav-link {
+  display: flex; align-items: center; gap: .65rem; padding: .55rem .75rem;
+  color: #3b4a5a; font-weight: 500; border-radius: .4rem; border-left: 3px solid transparent;
+}
+.lateral .nav-link:hover { background: var(--marino-claro); color: var(--marino); }
+.lateral .nav-link.active { background: var(--marino-claro); color: var(--marino); border-left-color: var(--marino); }
+.icono { flex-shrink: 0; }
+.pie { border-top: 1px solid var(--borde); padding: 1rem; }
 .principal { min-width: 0; }
+.barra-movil { background: #fff; border-bottom: 1px solid var(--borde); padding: .6rem; }
 
 @media (max-width: 767.98px) {
-  .lateral { position: fixed; top: 0; left: -260px; z-index: 1040; height: 100vh; transition: left .2s; }
+  .lateral { position: fixed; top: 0; left: -260px; z-index: 1040; transition: left .2s; box-shadow: 0 0 24px rgba(0, 0, 0, .15); }
   .lateral.abierto { left: 0; }
 }
 
-.insignia-recibida { background: #0d6efd; }
-.insignia-asignada { background: #fd7e14; }
-.insignia-en-proceso { background: #6f42c1; }
-.insignia-entregada { background: #198754; }
-.insignia-cancelada { background: #dc3545; }
+/* Estados: tonos sobrios */
+.badge { font-weight: 600; letter-spacing: .02em; border-radius: .35rem; padding: .38em .62em; }
+.insignia-recibida { background: #5b7fa6; }
+.insignia-asignada { background: #b7791f; }
+.insignia-en-proceso { background: #5a67a8; }
+.insignia-entregada { background: #2f855a; }
+.insignia-cancelada { background: #b83232; }
+.borde-recibida { border-left: .3rem solid #5b7fa6; }
+.borde-asignada { border-left: .3rem solid #b7791f; }
+.borde-en-proceso { border-left: .3rem solid #5a67a8; }
+.borde-entregada { border-left: .3rem solid #2f855a; }
+.borde-cancelada { border-left: .3rem solid #b83232; }
 
-.borde-recibida { border-left: .35rem solid #0d6efd; }
-.borde-asignada { border-left: .35rem solid #fd7e14; }
-.borde-en-proceso { border-left: .35rem solid #6f42c1; }
-.borde-entregada { border-left: .35rem solid #198754; }
-.borde-cancelada { border-left: .35rem solid #dc3545; }
+/* Barras de reportes, finas */
+.progress { height: .4rem; background: #e9edf2; border-radius: 99px; }
+.progress-bar { background: var(--marino); }
 
-.fila-click { cursor: pointer; }
-.portada { background: linear-gradient(135deg, #1e3a5f, #2563eb); color: #fff; }
-
-.login-marca {
-  background: radial-gradient(circle at 15% 15%, #3b82f6, transparent 45%),
-              linear-gradient(145deg, #0f2744, #1e3a8a);
-  color: #fff;
-  padding: 4rem;
-  flex-direction: column;
-  justify-content: center;
+/* Linea de tiempo del historial */
+.linea-tiempo { list-style: none; padding: 0; margin: 0; }
+.evento { position: relative; padding: 0 0 1.1rem 1.4rem; margin-left: .45rem; border-left: 2px solid #d5dbe3; }
+.evento:last-child { border-left-color: transparent; padding-bottom: 0; }
+.evento::before {
+  content: ""; position: absolute; left: -7px; top: .3rem; width: 12px; height: 12px;
+  border-radius: 50%; background: var(--marino); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--marino);
 }
-.login-marca h2 { font-size: 2.4rem; font-weight: 700; }
-.login-marca li { margin-bottom: .9rem; font-size: 1.05rem; }
+
+/* Portada y navegacion publica */
+.portada { background: var(--marino); color: #fff; }
+.navbar.bg-dark { background: var(--marino) !important; }
+
+/* Login */
+.login-marca { background: var(--marino); color: #fff; padding: 4rem; flex-direction: column; justify-content: center; }
+.login-marca h2 { font-size: 2.2rem; font-weight: 600; letter-spacing: -.01em; }
+.login-marca li { margin-bottom: .9rem; font-size: 1.02rem; }
 .logo-circulo {
-  width: 56px; height: 56px; border-radius: 16px;
-  background: rgba(255, 255, 255, .15);
-  display: inline-flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 1.6rem;
+  width: 52px; height: 52px; border-radius: 12px; background: rgba(255, 255, 255, .12);
+  display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.5rem;
 }
 .login-caja { width: 100%; max-width: 430px; padding: 2rem 1.5rem; }
 .cuenta-demo {
-  display: flex; align-items: center; gap: .6rem; width: 100%;
-  padding: .55rem .75rem; text-align: left;
-  border: 1px solid #dee2e6; border-radius: .6rem; background: #fff;
+  display: flex; align-items: center; gap: .6rem; width: 100%; padding: .55rem .75rem; text-align: left;
+  border: 1px solid var(--borde); border-radius: .5rem; background: #fff;
 }
-.cuenta-demo:hover { border-color: #2563eb; background: #f5f8ff; }
+.cuenta-demo:hover { border-color: var(--marino); background: var(--marino-claro); }
 .cuenta-demo .ini {
-  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; color: #fff; font-weight: 700; font-size: .8rem;
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-weight: 700; font-size: .85rem;
 }
-.ini-cliente { background: #0d6efd; }
-.ini-socio { background: #6f42c1; }
-.ini-asistente { background: #fd7e14; }
-.ini-admin { background: #198754; }
+.ini-cliente { background: #5b7fa6; }
+.ini-socio { background: #5a67a8; }
+.ini-asistente { background: #b7791f; }
+.ini-admin { background: #2f855a; }
 
+/* Impresion limpia */
+@media print {
+  .lateral, .barra-movil, .btn, form { display: none !important; }
+  body { background: #fff; }
+  main { padding: 0 !important; }
+  .card { border: 1px solid #ccc; break-inside: avoid; }
+}

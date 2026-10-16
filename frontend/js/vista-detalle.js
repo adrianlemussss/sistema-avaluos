@@ -190,9 +190,9 @@ async function pintarDetalle(contenedor, id, flash) {
 
 
   const hist = tarjetaConTitulo('Historial');
-  const lista = nodo('ul', undefined, 'list-group list-group-flush');
+  const lista = nodo('ul', undefined, 'linea-tiempo');
   historial.forEach((e) => {
-    const li = nodo('li', undefined, 'list-group-item px-0');
+    const li = nodo('li', undefined, 'evento');
     const linea = nodo('div', undefined, 'd-flex align-items-center gap-2');
     linea.appendChild(insignia(e.estado_nuevo));
     if (e.tipo_evento === 'creacion') linea.appendChild(nodo('span', 'Solicitud registrada', 'small'));
@@ -222,4 +222,5 @@ App.registrar({
     await pintarDetalle(contenedor, Number(params[0]), flash);
   },
 });
+
 
