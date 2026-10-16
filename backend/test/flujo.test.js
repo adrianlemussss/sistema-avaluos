@@ -369,17 +369,4 @@ test('endurecimiento: tipo de contenido, 404 en JSON y sesiones en la base', asy
   assert.ok(filas[0].n >= 6);
 });
 
-test('endurecimiento: tipo de contenido, 404 en JSON y sesiones en la base', async () => {
-  const texto = await fetch(base + '/api/auth/login', {
-    method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: 'x' });
-  assert.equal(texto.status, 415);
-  const formulario = await fetch(base + '/api/auth/login', {
-    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'email=a' });
-  assert.equal(formulario.status, 415);
-  const roto = await fetch(base + '/api/auth/login', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{malo' });
-  assert.equal(roto.status, 400);
-  assert.equal((await u.cliente1.llamar('GET', '/api/no-existe')).status, 404);
-  const [filas] = await pool.query('SELECT COUNT(*) AS n FROM sesion WHERE expira > UTC_TIMESTAMP()');
-  assert.ok(filas[0].n >= 6);
-});
+
