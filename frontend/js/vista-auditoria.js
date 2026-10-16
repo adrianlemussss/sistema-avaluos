@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 const EVENTOS = {
   PERMISO_OTORGADO: 'Permiso otorgado',
@@ -8,6 +8,7 @@ const EVENTOS = {
   USUARIO_CREADO: 'Usuario creado',
   USUARIO_ROL: 'Usuario: cambio de rol',
   USUARIO_ACTIVO: 'Usuario: alta o baja',
+  REFERENCIA_REGISTRADA: 'Referencia de entrega registrada',
 };
 
 App.registrar({
@@ -76,3 +77,4 @@ App.registrar({
     pintar();
   },
 });
+

@@ -13,7 +13,7 @@ function listaPendientes(titulo, items, vacio) {
     enlace.href = '#/solicitud/' + s.id_solicitud;
     const texto = nodo('span');
     texto.appendChild(nodo('span', s.folio, 'fw-semibold me-2'));
-    texto.appendChild(nodo('span', s.tipo + ' Â· ' + s.proposito, 'text-muted small'));
+    texto.appendChild(nodo('span', s.tipo + ' · ' + s.proposito, 'text-muted small'));
     enlace.appendChild(texto);
     enlace.appendChild(insignia(s.estado));
     lista.appendChild(enlace);
@@ -67,8 +67,8 @@ App.registrar({
     contenedor.appendChild(fila);
 
     if (rol === 'cliente') {
-      contenedor.appendChild(listaPendientes('Mis solicitudes mÃ¡s recientes', datos,
-        'AÃºn no has registrado solicitudes.'));
+      contenedor.appendChild(listaPendientes('Mis solicitudes más recientes', datos,
+        'Aún no has registrado solicitudes.'));
     } else if (rol === 'socio') {
       contenedor.appendChild(listaPendientes('Por atender',
         datos.filter((s) => s.estado === 'Asignada' || s.estado === 'En proceso'),
@@ -80,4 +80,3 @@ App.registrar({
     }
   },
 });
-

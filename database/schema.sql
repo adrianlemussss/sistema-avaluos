@@ -62,6 +62,7 @@ CREATE TABLE solicitud (
   origen ENUM('whatsapp','llamada','recomendacion','empresa','web') NOT NULL,
   proposito VARCHAR(255) NOT NULL,
   descripcion_bien VARCHAR(255) NOT NULL,
+  referencia_entrega VARCHAR(120) NULL,
   creada_en DATETIME(3) NOT NULL DEFAULT (UTC_TIMESTAMP(3)),
   FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente),
   FOREIGN KEY (id_tipo) REFERENCES tipo_avaluo (id_tipo),
@@ -168,3 +169,4 @@ INSERT INTO estado (id_estado, nombre) VALUES
   (1,'Recibida'),(2,'Asignada'),(3,'En proceso'),(4,'Entregada'),(5,'Cancelada');
 INSERT INTO tipo_avaluo (nombre) VALUES
   ('Comercial'),('Judicial'),('Fiscal'),('Catastral'),('Credito');
+

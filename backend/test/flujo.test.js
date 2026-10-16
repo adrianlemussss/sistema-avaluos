@@ -326,3 +326,30 @@ test('RF-15 usuarios: solo admin gestiona; rol y baja aplican de inmediato', asy
   assert.ok(eventos.includes('USUARIO_ROL'));
   assert.ok(eventos.includes('USUARIO_ACTIVO'));
 });
+
+test('RF-19 referencia de entrega: solo texto, solo el socio duenio, solo al entregar', async () => {
+  const ruta = '/api/solicitudes/' + idSol + '/referencia';
+  assert.equal((await u.socioB.llamar('POST', ruta, { referencia: 'X-1' })).status, 404);
+  assert.equal((await u.cliente1.llamar('POST', ruta, { referencia: 'X-1' })).status, 403);
+  assert.equal((await u.asistente.llamar('POST', ruta, { referencia: 'X-1' })).status, 403);
+  assert.equal((await u.socioA.llamar('POST', ruta, { referencia: '   ' })).status, 400);
+  assert.equal((await u.socioA.llamar('POST', ruta, { referencia: 'a'.repeat(121) })).status, 400);
+  assert.equal((await u.socioA.llamar('POST', ruta, { referencia: 123 })).status, 400);
+  const ok = await u.socioA.llamar('POST', ruta, { referencia: 'Dictamen DV-2026-014' });
+  assert.equal(ok.status, 200);
+
+  const detCliente = await u.cliente1.llamar('GET', '/api/solicitudes/' + idSol + '/detalle');
+  assert.equal(detCliente.json.solicitud.referencia_entrega, 'Dictamen DV-2026-014');
+  assert.equal(detCliente.json.acciones.referencia, false);
+  const detSocio = await u.socioA.llamar('GET', '/api/solicitudes/' + idSol + '/detalle');
+  assert.equal(detSocio.json.acciones.referencia, true);
+
+  // Solo se registra al entregar: una solicitud recien asignada la rechaza.
+  const nueva = await u.cliente1.llamar('POST', '/api/solicitudes', SOLICITUD);
+  assert.equal(nueva.status, 201);
+  const idN = nueva.json.id_solicitud;
+  assert.equal((await u.asistente.llamar('POST', '/api/solicitudes/' + idN + '/asignar',
+    { id_socio: ids.socioA })).status, 200);
+  assert.equal((await u.socioA.llamar('POST', '/api/solicitudes/' + idN + '/referencia',
+    { referencia: 'X-1' })).status, 409);
+});

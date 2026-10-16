@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 const COLOR_BOTON = {
   'En proceso': 'btn-primary',
@@ -75,6 +75,7 @@ async function pintarDetalle(contenedor, id, flash) {
   dato(dl, 'Inmueble', s.descripcion_bien);
   dato(dl, 'Responsable', s.socio || 'Sin asignar');
   dato(dl, 'Creada', fechaLocal(s.creada_en));
+  if (s.estado === 'Entregada') dato(dl, 'Referencia de entrega', s.referencia_entrega || 'Sin registrar');
   datos.cuerpo.appendChild(dl);
   izq.appendChild(datos.tarjeta);
 
@@ -180,7 +181,10 @@ async function pintarDetalle(contenedor, id, flash) {
     }
     izq.appendChild(bloque.tarjeta);
   }
-   if (acciones.cotizar && typeof bloqueCotizacion === 'function') {
+   if (acciones.referencia && typeof bloqueReferencia === 'function') {
+    izq.appendChild(bloqueReferencia(contenedor, id, s));
+  }
+  if (acciones.cotizar && typeof bloqueCotizacion === 'function') {
     izq.appendChild(await bloqueCotizacion(contenedor, id));
   }
 
@@ -218,3 +222,4 @@ App.registrar({
     await pintarDetalle(contenedor, Number(params[0]), flash);
   },
 });
+

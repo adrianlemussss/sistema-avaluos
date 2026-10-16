@@ -13,7 +13,7 @@ router.get('/:id/detalle', requireAuth, requireRol('cliente', 'socio', 'asistent
   try {
     const c = await condicionVisibilidad(u);
     const [filas] = await pool.query(
-      'SELECT s.id_solicitud, s.folio, s.id_socio, s.origen, s.proposito, s.descripcion_bien, s.creada_en, ' +
+      'SELECT s.id_solicitud, s.folio, s.id_socio, s.origen, s.proposito, s.descripcion_bien, s.referencia_entrega, s.creada_en, ' +
       'e.nombre AS estado, t.nombre AS tipo, cl.nombre AS cliente, us.nombre AS socio ' +
       'FROM solicitud s ' +
       'JOIN estado e ON e.id_estado = s.id_estado ' +
@@ -52,6 +52,7 @@ router.get('/:id/detalle', requireAuth, requireRol('cliente', 'socio', 'asistent
       estados,
       compartir: esDuenio,
       cotizar: esDuenio,
+      referencia: esDuenio && s.estado === 'Entregada',
     };
 
     let compartidaCon = [];
@@ -73,4 +74,5 @@ router.get('/:id/detalle', requireAuth, requireRol('cliente', 'socio', 'asistent
 });
 
 module.exports = router;
+
 
