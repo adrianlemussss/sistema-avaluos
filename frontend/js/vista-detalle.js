@@ -180,6 +180,10 @@ async function pintarDetalle(contenedor, id, flash) {
     }
     izq.appendChild(bloque.tarjeta);
   }
+   if (acciones.cotizar && typeof bloqueCotizacion === 'function') {
+    izq.appendChild(await bloqueCotizacion(contenedor, id));
+  }
+
 
   const hist = tarjetaConTitulo('Historial');
   const lista = nodo('ul', undefined, 'list-group list-group-flush');

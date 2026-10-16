@@ -220,3 +220,31 @@ test('CP-08 las bitacoras no se pueden editar ni borrar', async () => {
     pool.query('DELETE FROM auditoria_sistema WHERE id_solicitud = ?', [idSol]),
     /solo-insercion/);
 });
+
+test('RF-11 cotizacion: solo el socio duenio registra y consulta', async () => {
+  const ruta = '/api/solicitudes/' + idSol + '/cotizaciones';
+  assert.equal((await u.socioB.llamar('POST', ruta, { importe: 1500 })).status, 404);
+  assert.equal((await u.cliente1.llamar('GET', ruta)).status, 403);
+  assert.equal((await u.asistente.llamar('GET', ruta)).status, 403);
+  assert.equal((await u.socioA.llamar('POST', ruta, { importe: -5 })).status, 400);
+  assert.equal((await u.socioA.llamar('POST', ruta, { importe: 'abc' })).status, 400);
+  assert.equal((await u.socioA.llamar('POST', ruta, { importe: 10.123 })).status, 400);
+  const ok = await u.socioA.llamar('POST', ruta, { importe: 1500.5 });
+  assert.equal(ok.status, 201);
+  const lista = await u.socioA.llamar('GET', ruta);
+  assert.equal(lista.json.length, 1);
+  assert.equal(Number(lista.json[0].importe), 1500.5);
+  assert.equal(lista.json[0].estatus, 'propuesta');
+  const est = ruta + '/' + ok.json.id_cotizacion + '/estatus';
+  assert.equal((await u.socioA.llamar('POST', est, { estatus: 'acordada' })).status, 200);
+  assert.equal((await u.socioA.llamar('POST', est, { estatus: 'propuesta' })).status, 409);
+  assert.equal((await u.socioA.llamar('POST', est, { estatus: 'inexistente' })).status, 400);
+  assert.equal((await u.socioA.llamar('POST', est, { estatus: 'cancelada' })).status, 200);
+  assert.equal((await u.socioA.llamar('POST', est, { estatus: 'acordada' })).status, 409);
+  const [aud] = await pool.query(
+    "SELECT tipo_evento FROM auditoria_sistema WHERE id_solicitud = ? AND tipo_evento LIKE 'COTIZACION%' ORDER BY id_auditoria",
+    [idSol]);
+  assert.deepEqual(aud.map((a) => a.tipo_evento),
+    ['COTIZACION_REGISTRADA', 'COTIZACION_ESTATUS', 'COTIZACION_ESTATUS']);
+});
+

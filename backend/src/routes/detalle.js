@@ -51,6 +51,7 @@ router.get('/:id/detalle', requireAuth, requireRol('cliente', 'socio', 'asistent
       asignar: u.rol === 'asistente' && s.estado === 'Recibida',
       estados,
       compartir: esDuenio,
+      cotizar: esDuenio,
     };
 
     let compartidaCon = [];
@@ -72,3 +73,4 @@ router.get('/:id/detalle', requireAuth, requireRol('cliente', 'socio', 'asistent
 });
 
 module.exports = router;
+
