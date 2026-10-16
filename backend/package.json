@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node --test --test-concurrency=1",
     "dev": "node --watch src/server.js",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "reset-demo": "node scripts/reset-demo.js"
   },
   "keywords": [],
   "author": "",
