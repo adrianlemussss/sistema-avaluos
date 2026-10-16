@@ -1,48 +1,10 @@
 const express = require('express');
-const pool = require('../db');
 const { requireAuth, requireRol } = require('../middleware/auth');
-const { perfil, condicionVisibilidad } = require('../services/acceso');
+const { entero, falla, responder, enTransaccion, cargarComoDuenio } = require('../services/comun');
 
 const router = express.Router();
-// P-05: solo el socio due?o decide compartir (pendiente de validar con los socios).
+// P-05: solo el socio duenio decide compartir (pendiente de validar con los socios).
 const acceso = [requireAuth, requireRol('socio')];
-
-const entero = (v) => Number.isInteger(v) && v > 0;
-const falla = (http, mensaje) => Object.assign(new Error(mensaje), { http });
-
-function responder(res, e, etiqueta) {
-  if (e.http) return res.status(e.http).json({ error: e.message });
-  console.error(etiqueta + ': error interno');
-  res.status(500).json({ error: 'Error interno' });
-}
-
-async function enTransaccion(fn) {
-  const conn = await pool.getConnection();
-  try {
-    await conn.beginTransaction();
-    const r = await fn(conn);
-    await conn.commit();
-    return r;
-  } catch (e) {
-    await conn.rollback();
-    throw e;
-  } finally {
-    conn.release();
-  }
-}
-
-// 404 si no la ve; 403 si la ve (por compartici?n) pero no es el due?o.
-async function cargarComoDuenio(conn, u, id) {
-  const c = await condicionVisibilidad(u);
-  const [f] = await conn.query(
-    'SELECT s.id_solicitud, s.id_socio FROM solicitud s ' +
-    'WHERE s.id_solicitud = ? AND (' + c.sql + ') FOR UPDATE OF s',
-    [id, ...c.params]);
-  if (!f[0]) throw falla(404, 'No encontrada');
-  const p = await perfil(u);
-  if (f[0].id_socio !== p.idSocio) throw falla(403, 'Sin permiso');
-  return { idSocio: p.idSocio };
-}
 
 router.post('/:id/compartir', ...acceso, async (req, res) => {
   const id = Number(req.params.id);
@@ -52,7 +14,7 @@ router.post('/:id/compartir', ...acceso, async (req, res) => {
   const u = req.session.usuario;
   try {
     const r = await enTransaccion(async (conn) => {
-      const { idSocio } = await cargarComoDuenio(conn, u, id);
+      const { idSocio } = await cargarComoDuenio(conn, u, id, true);
       if (destino === idSocio) throw falla(400, 'Datos invalidos');
       const [socio] = await conn.query('SELECT id_usuario FROM socio WHERE id_socio = ?', [destino]);
       if (!socio[0]) throw falla(400, 'Datos invalidos');
@@ -84,7 +46,7 @@ router.delete('/:id/compartir/:idSocio', ...acceso, async (req, res) => {
   const u = req.session.usuario;
   try {
     const r = await enTransaccion(async (conn) => {
-      await cargarComoDuenio(conn, u, id);
+      await cargarComoDuenio(conn, u, id, true);
       const [permiso] = await conn.query(
         'SELECT p.id_permiso, s.id_usuario FROM permiso_compartido p ' +
         'JOIN socio s ON s.id_socio = p.id_socio_destino ' +

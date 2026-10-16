@@ -3,33 +3,10 @@ const pool = require('../db');
 const { requireAuth, requireRol } = require('../middleware/auth');
 const { perfil, condicionVisibilidad } = require('../services/acceso');
 const { ESTADOS, transicionValida } = require('../services/estados');
+const { entero, falla, responder, enTransaccion } = require('../services/comun');
 
 const router = express.Router();
 const acceso = [requireAuth, requireRol('socio', 'asistente')];
-
-const entero = (v) => Number.isInteger(v) && v > 0;
-const falla = (http, mensaje) => Object.assign(new Error(mensaje), { http });
-
-function responder(res, e, etiqueta) {
-  if (e.http) return res.status(e.http).json({ error: e.message });
-  console.error(etiqueta + ': error interno');
-  res.status(500).json({ error: 'Error interno' });
-}
-
-async function enTransaccion(fn) {
-  const conn = await pool.getConnection();
-  try {
-    await conn.beginTransaction();
-    const r = await fn(conn);
-    await conn.commit();
-    return r;
-  } catch (e) {
-    await conn.rollback();
-    throw e;
-  } finally {
-    conn.release();
-  }
-}
 
 // Bloquea la fila solo si el usuario puede verla; si no, 404 (no revela que existe).
 async function cargarBloqueada(conn, u, id) {
