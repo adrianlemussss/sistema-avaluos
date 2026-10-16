@@ -1,0 +1,62 @@
+
+body { min-height: 100vh; }
+
+.lateral { width: 250px; min-height: 100vh; display: flex; flex-direction: column; flex-shrink: 0; }
+.lateral .nav-link { border-radius: .4rem; }
+.lateral .nav-link:hover { background: rgba(255, 255, 255, .1); }
+.lateral .nav-link.active { background: #0d6efd; }
+.principal { min-width: 0; }
+
+@media (max-width: 767.98px) {
+  .lateral { position: fixed; top: 0; left: -260px; z-index: 1040; height: 100vh; transition: left .2s; }
+  .lateral.abierto { left: 0; }
+}
+
+.insignia-recibida { background: #0d6efd; }
+.insignia-asignada { background: #fd7e14; }
+.insignia-en-proceso { background: #6f42c1; }
+.insignia-entregada { background: #198754; }
+.insignia-cancelada { background: #dc3545; }
+
+.borde-recibida { border-left: .35rem solid #0d6efd; }
+.borde-asignada { border-left: .35rem solid #fd7e14; }
+.borde-en-proceso { border-left: .35rem solid #6f42c1; }
+.borde-entregada { border-left: .35rem solid #198754; }
+.borde-cancelada { border-left: .35rem solid #dc3545; }
+
+.fila-click { cursor: pointer; }
+.portada { background: linear-gradient(135deg, #1e3a5f, #2563eb); color: #fff; }
+
+.login-marca {
+  background: radial-gradient(circle at 15% 15%, #3b82f6, transparent 45%),
+              linear-gradient(145deg, #0f2744, #1e3a8a);
+  color: #fff;
+  padding: 4rem;
+  flex-direction: column;
+  justify-content: center;
+}
+.login-marca h2 { font-size: 2.4rem; font-weight: 700; }
+.login-marca li { margin-bottom: .9rem; font-size: 1.05rem; }
+.logo-circulo {
+  width: 56px; height: 56px; border-radius: 16px;
+  background: rgba(255, 255, 255, .15);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1.6rem;
+}
+.login-caja { width: 100%; max-width: 430px; padding: 2rem 1.5rem; }
+.cuenta-demo {
+  display: flex; align-items: center; gap: .6rem; width: 100%;
+  padding: .55rem .75rem; text-align: left;
+  border: 1px solid #dee2e6; border-radius: .6rem; background: #fff;
+}
+.cuenta-demo:hover { border-color: #2563eb; background: #f5f8ff; }
+.cuenta-demo .ini {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: .85rem;
+}
+.ini-cliente { background: #0d6efd; }
+.ini-socio { background: #6f42c1; }
+.ini-asistente { background: #fd7e14; }
+.ini-admin { background: #198754; }
+

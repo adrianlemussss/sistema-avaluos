@@ -42,9 +42,12 @@ app.use('/api/solicitudes', require('./routes/solicitudes'));
 app.use('/api/solicitudes', require('./routes/flujo'));
 app.use('/api/solicitudes', require('./routes/compartir'));
 
+app.use('/api/solicitudes', require('./routes/detalle'));
+
 app.use('/api', require('./routes/catalogos'));
 
 app.use(express.static(path.join(__dirname, '..', '..', 'frontend')));
 
 module.exports = app;
+
 
