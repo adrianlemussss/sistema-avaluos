@@ -275,3 +275,54 @@ test('RF-13 reportes: conteos consistentes y limitados a lo visible', async () =
   const futuro = await u.asistente.llamar('GET', ruta + '?desde=2999-01-01');
   assert.equal(futuro.json.total, 0);
 });
+
+test('RF-15 usuarios: solo admin gestiona; rol y baja aplican de inmediato', async () => {
+  const datos = { nombre: 'Nuevo Socio', email: 'x@test.local', password: 'ClaveLarga-12345', rol: 'admin' };
+  for (const cli of [u.socioA, u.asistente, u.cliente1]) {
+    assert.equal((await cli.llamar('GET', '/api/usuarios')).status, 403);
+    assert.equal((await cli.llamar('POST', '/api/usuarios', datos)).status, 403);
+    assert.equal((await cli.llamar('GET', '/api/auditoria')).status, 403);
+  }
+
+  const correo = 'nuevo.' + SUF + '@test.local';
+  const base = { nombre: 'Nuevo Socio', password: 'ClaveLarga-12345', rol: 'socio', email: correo };
+  assert.equal((await u.admin.llamar('POST', '/api/usuarios', { ...base, password: 'corta' })).status, 400);
+  assert.equal((await u.admin.llamar('POST', '/api/usuarios', { ...base, email: 'sin-arroba' })).status, 400);
+  assert.equal((await u.admin.llamar('POST', '/api/usuarios', { ...base, rol: 'superusuario' })).status, 400);
+  const crear = await u.admin.llamar('POST', '/api/usuarios', base);
+  assert.equal(crear.status, 201);
+  const idNuevo = crear.json.id_usuario;
+  assert.equal((await u.admin.llamar('POST', '/api/usuarios', base)).status, 409);
+
+  const nuevo = nuevoCliente();
+  const entrada = await nuevo.llamar('POST', '/api/auth/login', { email: correo, password: base.password });
+  assert.equal(entrada.status, 200);
+  const lista = await nuevo.llamar('GET', '/api/solicitudes');
+  assert.equal(lista.status, 200);
+  assert.deepEqual(lista.json, []);
+
+  // El cambio de rol se aplica a la sesion que ya estaba abierta.
+  const cambio = await u.admin.llamar('POST', '/api/usuarios/' + idNuevo + '/rol', { rol: 'asistente' });
+  assert.equal(cambio.status, 200);
+  assert.equal((await nuevo.llamar('GET', '/api/auth/me')).json.rol, 'asistente');
+  assert.equal((await u.admin.llamar('POST', '/api/usuarios/' + idNuevo + '/rol', { rol: 'asistente' })).status, 409);
+
+  const yo = (await u.admin.llamar('GET', '/api/auth/me')).json.id;
+  assert.equal((await u.admin.llamar('POST', '/api/usuarios/' + yo + '/rol', { rol: 'socio' })).status, 409);
+  assert.equal((await u.admin.llamar('POST', '/api/usuarios/' + yo + '/activo', { activo: false })).status, 409);
+  assert.equal((await u.admin.llamar('POST', '/api/usuarios/' + idNuevo + '/activo', { activo: 'no' })).status, 400);
+
+  // La baja corta la sesion abierta y bloquea el inicio de sesion.
+  const baja = await u.admin.llamar('POST', '/api/usuarios/' + idNuevo + '/activo', { activo: false });
+  assert.equal(baja.status, 200);
+  assert.equal((await nuevo.llamar('GET', '/api/auth/me')).status, 401);
+  const otra = nuevoCliente();
+  assert.equal((await otra.llamar('POST', '/api/auth/login', { email: correo, password: base.password })).status, 401);
+
+  const aud = await u.admin.llamar('GET', '/api/auditoria');
+  assert.equal(aud.status, 200);
+  const eventos = aud.json.map((e) => e.tipo_evento);
+  assert.ok(eventos.includes('USUARIO_CREADO'));
+  assert.ok(eventos.includes('USUARIO_ROL'));
+  assert.ok(eventos.includes('USUARIO_ACTIVO'));
+});

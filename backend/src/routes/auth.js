@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const rateLimit = require('express-rate-limit');
 const pool = require('../db');
+const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -52,10 +53,11 @@ router.post('/logout', (req, res) => {
   });
 });
 
-router.get('/me', (req, res) => {
+router.get('/me', requireAuth, (req, res) => {
   if (!req.session.usuario) return res.status(401).json({ error: 'No autenticado' });
   res.json(req.session.usuario);
 });
 
 module.exports = router;
+
 

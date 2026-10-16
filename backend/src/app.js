@@ -46,11 +46,14 @@ app.use('/api/solicitudes', require('./routes/cotizaciones'));
 app.use('/api/solicitudes', require('./routes/detalle'));
 
 app.use('/api/reportes', require('./routes/reportes'));
+app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/auditoria', require('./routes/auditoria'));
 app.use('/api', require('./routes/catalogos'));
 
 app.use(express.static(path.join(__dirname, '..', '..', 'frontend')));
 
 module.exports = app;
+
 
 
 
