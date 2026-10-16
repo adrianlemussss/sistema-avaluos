@@ -11,6 +11,7 @@ const HASH_FALSO = bcrypt.hashSync('relleno-no-usado', 12);
 const limitador = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 10,
+  skipSuccessfulRequests: true,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Demasiados intentos. Intenta mas tarde.' },
@@ -57,3 +58,4 @@ router.get('/me', (req, res) => {
 });
 
 module.exports = router;
+
