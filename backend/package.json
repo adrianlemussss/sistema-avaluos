@@ -8,7 +8,9 @@
     "dev": "node --watch src/server.js",
     "seed": "node scripts/seed.js",
     "reset-demo": "node scripts/reset-demo.js",
-    "seed-demo": "node scripts/seed-demo.js"
+    "seed-demo": "node scripts/seed-demo.js",
+    "respaldo": "node scripts/respaldo.js",
+    "restaurar": "node scripts/restaurar.js"
   },
   "keywords": [],
   "author": "",
