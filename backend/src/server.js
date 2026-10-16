@@ -34,8 +34,11 @@ app.use('/api/solicitudes', require('./routes/solicitudes'));
 
 app.use('/api/solicitudes', require('./routes/flujo'));
 
+app.use('/api/solicitudes', require('./routes/compartir'));
+
 const port = Number(process.env.PORT) || 3000;
 app.listen(port, () => console.log('API escuchando en http://localhost:' + port));
+
 
 
 
