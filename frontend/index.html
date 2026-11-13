@@ -1,36 +1,233 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gestión de solicitudes de avalúo</title>
-  <link rel="stylesheet" href="/vendor/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/estilos.css">
-</head>
-<body class="bg-light">
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container">
-      <span class="navbar-brand">Gestión de solicitudes de avalúo</span>
-      <a class="btn btn-outline-light btn-sm" href="/login.html">Iniciar sesión</a>
-    </div>
-  </nav>
-  <header class="portada py-5">
-    <div class="container py-4">
-      <h1 class="display-5 fw-bold">Seguimiento claro de tus avalúos</h1>
-      <p class="lead col-lg-8">Registra tu solicitud, conoce quién la atiende y consulta en qué etapa va, desde la computadora o el celular.</p>
-      <a class="btn btn-light btn-lg" href="/login.html">Entrar al sistema</a>
-    </div>
-  </header>
-  <main class="container py-5">
-    <h2 class="h4 mb-4">Tipos de avalúo</h2>
-    <div class="row g-3">
-      <div class="col-md-6 col-lg"><div class="card h-100 shadow-sm"><div class="card-body"><h3 class="h6">Comercial</h3><p class="small text-muted mb-0">Conocer el valor comercial de un inmueble.</p></div></div></div>
-      <div class="col-md-6 col-lg"><div class="card h-100 shadow-sm"><div class="card-body"><h3 class="h6">Judicial</h3><p class="small text-muted mb-0">Procesos testamentarios, intestamentarios, usucapión y otros.</p></div></div></div>
-      <div class="col-md-6 col-lg"><div class="card h-100 shadow-sm"><div class="card-body"><h3 class="h6">Fiscal</h3><p class="small text-muted mb-0">Traslado de dominio, con uso en notaría o registro.</p></div></div></div>
-      <div class="col-md-6 col-lg"><div class="card h-100 shadow-sm"><div class="card-body"><h3 class="h6">Catastral</h3><p class="small text-muted mb-0">Actualización o dictamen catastral.</p></div></div></div>
-      <div class="col-md-6 col-lg"><div class="card h-100 shadow-sm"><div class="card-body"><h3 class="h6">Crédito</h3><p class="small text-muted mb-0">Trámites vinculados a operaciones de crédito.</p></div></div></div>
-    </div>
-    <p class="text-muted small mt-5">Proyecto académico UPIICSA (8CV81) con datos ficticios. Los datos de contacto de la empresa se publicarán cuando ella los apruebe.</p>
-  </main>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Empresa Valuadora de Inmuebles, Industrias y Maquinaria S. A. de C.V. Conoce nuestros servicios y nuestro equipo."
+    />
+    <meta name="theme-color" content="#101f2a" />
+    <title>Empresa Valuadora · Inmuebles, Industrias y Maquinaria</title>
+    <link rel="stylesheet" href="/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/estilos.css" />
+    <script src="/js/publico.js" defer></script>
+  </head>
+  <body class="sitio-publico">
+    <a class="saltar" href="#principal">Saltar al contenido</a>
+    <header class="cabecera-publica">
+      <a class="identidad" href="/" aria-label="Empresa Valuadora, inicio"
+        ><span class="monograma" aria-hidden="true">V<span></span></span
+        ><span class="nombre-marca"
+          >Empresa Valuadora<small
+            >Inmuebles · Industrias · Maquinaria</small
+          ></span
+        ></a
+      ><button
+        class="menu-publico-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="navegacion-publica"
+      >
+        Menú <span aria-hidden="true">＋</span>
+      </button>
+      <nav
+        id="navegacion-publica"
+        class="navegacion-publica"
+        aria-label="Navegación principal"
+      >
+        <a href="#servicios">Especialidades</a><a href="#firma">La firma</a
+        ><a href="#contacto">Contacto</a
+        ><a href="/login.html" class="acceso-nav"
+          >Acceso al sistema <span aria-hidden="true">↗</span></a
+        >
+      </nav>
+    </header>
+    <main id="principal">
+      <section class="apertura" aria-labelledby="titulo-portada">
+        <div class="apertura-texto">
+          <p class="sobrelinea"><span></span> Valoración patrimonial</p>
+          <h1 id="titulo-portada">
+            El valor detrás<br />de cada <em>decisión.</em>
+          </h1>
+          <p class="introduccion">
+            Inmuebles, industrias y maquinaria.<br />Una perspectiva técnica
+            para entender lo que importa.
+          </p>
+          <a class="enlace-editorial" href="#servicios"
+            >Conoce nuestras especialidades <span aria-hidden="true">↗</span></a
+          >
+          <div class="apertura-pie">
+            <span>Empresa Valuadora</span
+            ><span>Perspectiva. Precisión. Valor.</span>
+          </div>
+        </div>
+        <figure class="apertura-imagen">
+          <img
+            src="/assets/arquitectura-editorial.png"
+            alt="Fachada arquitectónica de piedra y bronce vista en perspectiva; imagen conceptual"
+            width="1536"
+            height="1024"
+            fetchpriority="high"
+          />
+          <figcaption>
+            <span>01 / Perspectiva patrimonial</span
+            ><span>Imagen conceptual</span>
+          </figcaption>
+          <div class="marco-tecnico" aria-hidden="true">
+            <span>V / 01</span><i></i>
+          </div>
+        </figure>
+      </section>
+      <div class="franja-especialidad">
+        <span>Una visión integral del patrimonio</span
+        ><span>Inmuebles <i>/</i> Industrias <i>/</i> Maquinaria</span>
+      </div>
+      <section
+        id="servicios"
+        class="seccion-publica servicios"
+        aria-labelledby="titulo-servicios"
+      >
+        <div class="cab-seccion">
+          <p class="sobrelinea">01 — Especialidades</p>
+          <h2 id="titulo-servicios">
+            Cada propósito merece<br />una valoración <em>precisa.</em>
+          </h2>
+          <p>
+            El contexto define la necesidad.<br />Conoce los tipos de avalúo que
+            contempla nuestra plataforma.
+          </p>
+        </div>
+        <div class="lista-servicios">
+          <article>
+            <span class="indice">01</span>
+            <h3>Comercial</h3>
+            <p>
+              Conocer el valor comercial de un inmueble para orientar una
+              decisión patrimonial.
+            </p>
+            <span class="cruz-editorial" aria-hidden="true">↗</span>
+          </article>
+          <article>
+            <span class="indice">02</span>
+            <h3>Judicial</h3>
+            <p>
+              Avalúos para procesos testamentarios, intestamentarios, usucapión
+              y otros procedimientos.
+            </p>
+            <span class="cruz-editorial" aria-hidden="true">↗</span>
+          </article>
+          <article>
+            <span class="indice">03</span>
+            <h3>Fiscal</h3>
+            <p>
+              Valoración vinculada al traslado de dominio y a trámites ante
+              notaría o registro.
+            </p>
+            <span class="cruz-editorial" aria-hidden="true">↗</span>
+          </article>
+          <article>
+            <span class="indice">04</span>
+            <h3>Catastral</h3>
+            <p>Actualización o dictamen catastral de un inmueble.</p>
+            <span class="cruz-editorial" aria-hidden="true">↗</span>
+          </article>
+          <article>
+            <span class="indice">05</span>
+            <h3>Crédito</h3>
+            <p>Avalúos relacionados con trámites y operaciones de crédito.</p>
+            <span class="cruz-editorial" aria-hidden="true">↗</span>
+          </article>
+        </div>
+      </section>
+      <section
+        id="firma"
+        class="seccion-publica firma"
+        aria-labelledby="titulo-firma"
+      >
+        <div class="firma-manifiesto">
+          <p class="sobrelinea">02 — La firma</p>
+          <h2 id="titulo-firma">
+            Criterio profesional.<br />Atención <em>personal.</em>
+          </h2>
+          <p>
+            Empresa Valuadora de Inmuebles, Industrias y Maquinaria S. A. de
+            C.V.
+          </p>
+          <div class="firma-sello" aria-hidden="true">
+            <span>V</span><small>Perspectiva<br />patrimonial</small>
+          </div>
+        </div>
+        <div class="equipo-lista">
+          <p class="sobrelinea">Un equipo, responsabilidades claras</p>
+          <article>
+            <span class="indice">01</span>
+            <div>
+              <h3>Ingeniero Orlando</h3>
+              <p class="cargo">Dirección y valoración</p>
+              <p>
+                Genera y dirige los proyectos, realiza los avalúos, firma y
+                conduce la relación y los acuerdos con el cliente.
+              </p>
+            </div>
+          </article>
+          <article>
+            <span class="indice">02</span>
+            <div>
+              <h3>Administradora Daniela</h3>
+              <p class="cargo">Apoyo de proyectos y documentación</p>
+              <p>
+                Atiende proyectos pequeños asignados por el ingeniero y corrige
+                la documentación de apoyo.
+              </p>
+            </div>
+          </article>
+          <article>
+            <span class="indice">03</span>
+            <div>
+              <h3>Administrador Xiuhtémoc</h3>
+              <p class="cargo">Capacitación y apoyo operativo</p>
+              <p>
+                Participa en capacitación y en tareas de proyectos y
+                documentación asignadas por el ingeniero.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section
+        id="contacto"
+        class="seccion-publica contacto"
+        aria-labelledby="titulo-contacto"
+      >
+        <p class="sobrelinea">03 — Conversemos</p>
+        <div>
+          <h2 id="titulo-contacto">
+            La próxima decisión<br />comienza con <em>claridad.</em>
+          </h2>
+          <div class="contacto-nota">
+            <span class="linea-bronce"></span>
+            <p>
+              Los canales de contacto y las redes oficiales de la empresa
+              estarán disponibles próximamente.
+            </p>
+            <a class="enlace-editorial" href="/login.html"
+              >Acceso al sistema de seguimiento
+              <span aria-hidden="true">↗</span></a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="pie-publico">
+      <div class="nombre-marca">
+        Empresa Valuadora<small>Inmuebles · Industrias · Maquinaria</small>
+      </div>
+      <p>
+        Prototipo académico UPIICSA · Datos ficticios.<br />Empresa Valuadora de
+        Inmuebles, Industrias y Maquinaria S. A. de C.V.
+      </p>
+      <a href="#principal">Volver al inicio ↑</a>
+    </footer>
+  </body>
 </html>
